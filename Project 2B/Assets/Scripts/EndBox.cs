@@ -10,8 +10,6 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class EndBox : MonoBehaviour {
 
-    public GameObject basket;
-
     private int lives = 3;
     public Text livesText;
     [Space]
@@ -26,6 +24,7 @@ public class EndBox : MonoBehaviour {
     {
         if (lives == 0)
         {
+            //go through the playerpref of the high score and update
             int[] highscores = new int[10];
             for (int i = 0; i < 10; i++)
             {
@@ -45,12 +44,11 @@ public class EndBox : MonoBehaviour {
                     }
                 }
             }
+            //update the high score list
             for (int i = 0; i < 10; i++)
             {
                 PlayerPrefs.SetInt("Highscore" + i, highscores[i]);
-                //Debug.Log(i + " " + PlayerPrefs.GetInt("Highscore" + i));
             }
-            //Debug.Log(PlayerPrefs.GetInt("currentScore"));
             SceneManager.LoadScene("End");
         } 
     }

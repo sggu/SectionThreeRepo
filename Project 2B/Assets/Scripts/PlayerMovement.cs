@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void Start()
     {        
+        //at the start of the game, all playerprefs are called  
         setText();
         Time.timeScale = 0;
         bgVolume.volume = PlayerPrefs.GetFloat("VolumeSlider");
