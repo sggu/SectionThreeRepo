@@ -10,11 +10,13 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class EndBox : MonoBehaviour {
 
+    public GameObject basket;
+
     private int lives = 3;
     public Text livesText;
     [Space]
     public AudioSource sfx;
-
+       
     void Start()
     {
         setText();        
@@ -24,7 +26,32 @@ public class EndBox : MonoBehaviour {
     {
         if (lives == 0)
         {
-            SceneManager.LoadScene("SampleScene");
+            int[] highscores = new int[10];
+            for (int i = 0; i < 10; i++)
+            {
+                highscores[i] = PlayerPrefs.GetInt("Highscore" + i);
+            }
+            int curr = PlayerPrefs.GetInt("currentScore");
+            for (int i = 0; i < 10; i++)
+            {
+                if (curr > highscores[i])
+                {
+                    int temp;
+                    for (int j = i; j < 10; j++)
+                    {
+                        temp = highscores[j];
+                        highscores[j] = curr;
+                        curr = temp;
+                    }
+                }
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                PlayerPrefs.SetInt("Highscore" + i, highscores[i]);
+                //Debug.Log(i + " " + PlayerPrefs.GetInt("Highscore" + i));
+            }
+            //Debug.Log(PlayerPrefs.GetInt("currentScore"));
+            SceneManager.LoadScene("End");
         } 
     }
 

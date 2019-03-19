@@ -9,15 +9,18 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class PlayerMovement : MonoBehaviour {
     [Header("Settings")]
+    public int score = 0;
     public float speed;
     public float leftAndRightEdge;
     [Space]
     public GameObject applePrefab;
     public Text scoreText;
+    public Text controlText;
     [Space]
+    public AudioSource bgVolume;
     public AudioSource sfx;
+    public AudioSource oof;
 
-    private int score = 0;
 
     private bool gameStarted = false;
     private bool mouseControl = false;
@@ -27,6 +30,10 @@ public class PlayerMovement : MonoBehaviour {
     {        
         setText();
         Time.timeScale = 0;
+        bgVolume.volume = PlayerPrefs.GetFloat("VolumeSlider");
+        sfx.volume = PlayerPrefs.GetFloat("sfxSlider");
+        oof.volume = PlayerPrefs.GetFloat("sfxSlider");
+        PlayerPrefs.SetInt("currentScore", 0);
     }
 
     // Update is called once per frame
@@ -37,6 +44,7 @@ public class PlayerMovement : MonoBehaviour {
             gameStarted = true;
             mouseControl = true;
             keyControl = false;
+            Destroy(controlText);
         }
         //if space is pressed the game will use keyboard control
         else if (Input.GetKey(KeyCode.Space))
@@ -44,6 +52,7 @@ public class PlayerMovement : MonoBehaviour {
             gameStarted = true;
             mouseControl = false;
             keyControl = true;
+            Destroy(controlText);
         }
         if (gameStarted) Time.timeScale = 1;
 
@@ -65,7 +74,7 @@ public class PlayerMovement : MonoBehaviour {
                 transform.position = new Vector3(leftAndRightEdge, transform.position.y, transform.position.z);
             }
             //press return to reset the game
-            if (Input.GetKey(KeyCode.Return)) SceneManager.LoadScene("SampleScene");
+            if (Input.GetKey(KeyCode.Return)) SceneManager.LoadScene("Game");
         }
         //for keyboard
         else if (keyControl)
@@ -93,7 +102,7 @@ public class PlayerMovement : MonoBehaviour {
                 transform.position = new Vector3(leftAndRightEdge, transform.position.y, transform.position.z);
             }
             //press return to reset the game
-            if (Input.GetKey(KeyCode.Return)) SceneManager.LoadScene("SampleScene");
+            if (Input.GetKey(KeyCode.Return)) SceneManager.LoadScene("Game");
         }
     }
 
@@ -103,6 +112,7 @@ public class PlayerMovement : MonoBehaviour {
         if (collision.gameObject.tag == "Apple")
         {
             score++;
+            PlayerPrefs.SetInt("currentScore", score);
             setText();
             sfx.Play();
         }

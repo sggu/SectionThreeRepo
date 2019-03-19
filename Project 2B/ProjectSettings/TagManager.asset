@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Apple
   - EndBox
+  - ControlText
+  - Settings
   layers:
   - Default
   - TransparentFX
